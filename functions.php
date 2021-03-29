@@ -33,12 +33,13 @@ function getTodoList()
 
 function getSelectedTodo($id)
 {
-    return getTodoTextById($id); 
+    return getTodoTextById($id);
 }
 
 function savePostedData($post)
 {
     checkToken($post['token']);
+    validate($post);
     $path = getRefererPath();
     switch ($path) {
         case '/new.php':
@@ -64,4 +65,12 @@ function getRefererPath()
 function e($text)
 {
     return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+}
+
+function validate($post)
+{
+    if (isset($post['content']) && $post['content'] === '') {
+        $_SESSION['err'] = '入力がありません';
+        redirectToPostedPage();
+    }
 }

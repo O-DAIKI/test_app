@@ -1,6 +1,7 @@
 <?php
 require_once('functions.php');
 header('Set-Cookie: flag=cookie123456789');
+setToken();
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -9,7 +10,9 @@ header('Set-Cookie: flag=cookie123456789');
   <title>Home</title>
 </head>
 <body>
-  welcome hello world
+  <?php if (!empty($_SESSION['err'])): ?>
+    <p><?= $_SESSION['err']; ?></p>
+  <?php endif; ?>
   <div>
      <a href="new.php">
        <p>新規作成</p>
@@ -33,6 +36,7 @@ header('Set-Cookie: flag=cookie123456789');
           <td>
             <form action="store.php" method="post">
               <input type="hidden" name="id" value="<?= e($todo['id']); ?>">
+              <input type="hidden" name="token" value="<?= $_SESSION['token']; ?>">
               <button type="submit">削除</button>
             </form>
           </td>
@@ -40,5 +44,6 @@ header('Set-Cookie: flag=cookie123456789');
       <?php endforeach; ?>
     </table>
   </div>
+  <?php unsetError(); ?>
 </body>
 </html>
